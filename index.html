@@ -1,1 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Run It Yourself</title>
+<style>
+  :root{
+    --green:#1E3A34; --green-deep:#16302B; --ink:#20302B; --muted:#5B6B64;
+    --paper:#FFFFFF; --wash:#F4F6F5; --line:#DDE4E1;
+    --accent:#F2C94C; --accent-soft:#FBF0D2;
+    --right:#2E7D4F; --right-soft:#EAF4EE;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+  body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--wash);line-height:1.55}
+  header.hero{background:var(--green);color:#fff;padding:2.4rem 1.2rem 2rem}
+  .wrap{max-width:840px;margin:0 auto}
+  .kicker{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.78rem;letter-spacing:.08em;opacity:.85;margin:0 0 .5rem}
+  header.hero h1{font-size:1.9rem;line-height:1.2;margin:0 0 .6rem;font-weight:700}
+  header.hero p.lede{margin:0;max-width:60ch;opacity:.93}
+  main{padding:1.6rem 1.2rem 4rem}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:1.5rem 1.6rem;margin:1.2rem 0}
+  .stagechip{display:inline-block;background:var(--accent-soft);border:1px solid var(--accent);border-radius:999px;padding:.15rem .8rem;font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.78rem;font-weight:600;color:var(--green-deep);margin-bottom:.6rem}
+  h2{font-size:1.35rem;margin:.2rem 0 .6rem}
+  h3{font-size:1.05rem;margin:1.2rem 0 .4rem}
+  .keybar{background:var(--accent-soft);border-left:5px solid var(--accent);padding:.7rem .9rem;border-radius:6px;margin:1rem 0;font-size:.97rem}
+  .strategy{background:var(--green);color:#fff;border-radius:10px;padding:1.2rem 1.3rem;margin:.4rem 0 1.2rem}
+  .strategy .label{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.74rem;letter-spacing:.09em;font-weight:700;color:var(--accent);margin:0 0 .35rem}
+  .strategy h3{margin:0 0 .45rem;font-size:1.2rem;color:#fff}
+  .strategy p{margin:.4rem 0;opacity:.95}
+  .pickbox{background:var(--wash);border:1px solid var(--line);border-radius:8px;padding:1rem 1.1rem;margin:.9rem 0}
+  .pickbox label{display:block;font-weight:700;margin-bottom:.2rem}
+  .pickbox .hint{font-size:.89rem;color:var(--muted);margin:0 0 .5rem}
+  input[type=text]{width:100%;font-family:Georgia,serif;font-size:1rem;padding:.55rem .65rem;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink)}
+  input[type=text]:disabled,textarea:disabled{background:var(--wash);color:var(--muted)}
+  .qblock{border:1px solid var(--line);border-radius:9px;padding:1rem 1.1rem;margin:.75rem 0;background:#fff}
+  .qblock .top{display:flex;gap:.7rem;align-items:flex-start;margin-bottom:.5rem}
+  .num{flex:none;width:1.75rem;height:1.75rem;border-radius:999px;background:var(--green);color:#fff;font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.85rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:.1rem}
+  .qblock .names b{display:block;font-size:1.04rem;color:var(--green-deep)}
+  .qblock .names span{font-size:.9rem;color:var(--muted)}
+  textarea{width:100%;font-family:Georgia,serif;font-size:1rem;padding:.6rem .7rem;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink);min-height:86px;resize:vertical}
+  .model{display:none;margin-top:1.2rem}
+  .model.show{display:block}
+  .ref{background:var(--right-soft);border-left:4px solid var(--right);border-radius:6px;padding:.9rem 1rem;font-size:.95rem}
+  .ref b.hd{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.76rem;letter-spacing:.05em;display:block;margin-bottom:.4rem;color:var(--green-deep)}
+  .ref p{margin:.5rem 0}
+  .ref p em{font-style:normal;font-weight:700;color:var(--green-deep)}
+  .checklist{margin-top:1.2rem}
+  .checklist p.lab{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.86rem;font-weight:700;color:var(--green-deep);margin:0 0 .45rem}
+  .cgroup{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.05em;color:var(--muted);margin:.9rem 0 .25rem}
+  .ck{display:flex;gap:.65rem;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:.6rem .8rem;margin:.35rem 0;cursor:pointer;background:#fff}
+  .ck:hover{border-color:var(--green)}
+  .ck input{margin-top:.2rem;accent-color:var(--green);width:1.05rem;height:1.05rem;flex:none}
+  .ck.on{border-color:var(--right);background:var(--right-soft)}
+  .ck span{font-size:.97rem}
+  button{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.95rem;font-weight:600;border-radius:8px;border:1px solid var(--green);padding:.6rem 1.2rem;cursor:pointer}
+  button.primary{background:var(--green);color:#fff}
+  button.primary:hover{background:var(--green-deep)}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  button:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  #closing{display:none}
+  .gapbox{background:var(--wash);border:1px solid var(--line);border-radius:8px;padding:.9rem 1rem;margin:.8rem 0}
+  .gapbox ul{margin:.4rem 0 0;padding-left:1.2rem}
+  .gapbox li{margin:.2rem 0}
+  .note{font-size:.85rem;color:var(--muted)}
+  .srmsg{position:absolute;left:-9999px}
+  footer{padding:1.5rem 1.2rem 2.5rem;color:var(--muted);font-size:.85rem;text-align:center}
+</style>
+</head>
+<body>
 
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">BEFORE THE CHECKPOINT</p>
+    <h1>Run it yourself</h1>
+    <p class="lede">You have watched the three questions worked through once. Before you answer anything, run them yourself, on a condition from your own course rather than one this module chose. It takes about seven minutes.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="card">
+    <div class="strategy">
+      <p class="label">THE STRATEGY</p>
+      <h3>Using the three questions on something new</h3>
+      <p>You just watched these three questions worked through on a client with vomiting. Following along is easy, because the answers were handed to you as they came. The work is deciding what belongs in each question when nobody has told you.</p>
+      <p>That is what happens next. You pick a condition from your own course, and you answer all three from what you already understand about how bodies work, before you open any notes on it.</p>
+    </div>
+
+    <h2>Pick your own condition</h2>
+
+    <div class="pickbox">
+      <label for="cond">A condition you are studying right now, or will be soon</label>
+      <p class="hint">Something real from your current course. Pick one you do not feel solid on, not one you could already explain. Heart failure, diabetic ketoacidosis, sepsis, a bowel obstruction, burns, whatever is actually in front of you.</p>
+      <input type="text" id="cond" autocomplete="off" placeholder="For example: heart failure">
+    </div>
+
+    <div class="qblock">
+      <div class="top"><span class="num">1</span><span class="names"><b>What normal physiology is being disrupted?</b><span>Name the system, and the value it is defending</span></span></div>
+      <textarea id="q1" placeholder="The system is... and the value it defends is..."></textarea>
+    </div>
+
+    <div class="qblock">
+      <div class="top"><span class="num">2</span><span class="names"><b>How is the body trying to compensate?</b><span>Name the mechanism, the time scale, and what it costs the client</span></span></div>
+      <textarea id="q2" placeholder="The body responds by... this happens over... and it costs..."></textarea>
+    </div>
+
+    <div class="qblock">
+      <div class="top"><span class="num">3</span><span class="names"><b>What happens when compensation fails, and what does the nurse do?</b><span>Name the findings that mark the turn, and the action that follows</span></span></div>
+      <textarea id="q3" placeholder="The findings that mark the turn are... and the nurse..."></textarea>
+    </div>
+
+    <p style="margin-top:1rem">
+      <button class="primary" id="revealbtn" type="button">Check my answers against the structure</button>
+      <span class="note" id="hint2" style="margin-left:.6rem">Answer all three first.</span>
+    </p>
+    <p class="note" id="err" role="alert" hidden></p>
+
+    <div class="model" id="model">
+      <div class="ref">
+        <b class="hd">WHAT A COMPLETE ANSWER LOOKS LIKE</b>
+        <p>Nobody can mark your condition for you, so here is a different one worked all the way through. Compare the shape of it, not the content.</p>
+        <p><em>Hypoglycemia.</em></p>
+        <p><em>One.</em> The system is metabolic, and the defended value is blood glucose, which the brain depends on continuously because it cannot store fuel.</p>
+        <p><em>Two.</em> Glucagon, epinephrine, and cortisol release stored glucose and slow its uptake. The response starts within minutes. It costs the client the sympathetic findings it produces: tremor, sweating, tachycardia, anxiety. Those are not the illness. They are the response.</p>
+        <p><em>Three.</em> When the counterregulatory response cannot keep up, glucose falls past the point where the brain can function. Confusion, slurred speech, and reduced responsiveness replace the tremor and sweating, and the client may become quieter rather than more distressed. The nurse treats the glucose immediately and does not read the settling as improvement.</p>
+      </div>
+
+      <div class="checklist" id="checklist">
+        <p class="lab">Now mark your own three answers against what each question asks for. Be strict.</p>
+
+        <p class="cgroup">QUESTION 1</p>
+        <label class="ck"><input type="checkbox" data-g="Question 1: naming the system that is disrupted"><span>I named the system</span></label>
+        <label class="ck"><input type="checkbox" data-g="Question 1: naming the specific value the body is defending"><span>I named the specific value it defends</span></label>
+
+        <p class="cgroup">QUESTION 2</p>
+        <label class="ck"><input type="checkbox" data-g="Question 2: naming the compensatory mechanism rather than describing symptoms"><span>I named the mechanism, not just the symptoms</span></label>
+        <label class="ck"><input type="checkbox" data-g="Question 2: naming the time scale over which the response works"><span>I said how fast it works</span></label>
+        <label class="ck"><input type="checkbox" data-g="Question 2: naming what the compensation costs the client"><span>I said what it costs the client</span></label>
+
+        <p class="cgroup">QUESTION 3</p>
+        <label class="ck"><input type="checkbox" data-g="Question 3: naming the specific findings that mark the turn"><span>I named the findings that mark the turn</span></label>
+        <label class="ck"><input type="checkbox" data-g="Question 3: naming what the nurse actually does"><span>I named what the nurse does</span></label>
+
+        <p style="margin-top:1rem"><button class="primary" id="donebtn" type="button">See where my answers thinned out</button></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="closing" aria-live="polite">
+    <span class="stagechip">WHAT THAT TOLD YOU</span>
+    <h2 id="verdicthead"></h2>
+    <p id="verdictbody"></p>
+
+    <div class="gapbox" id="gapbox" hidden>
+      <strong>Your answer did not include</strong>
+      <ul id="gaplist"></ul>
+      <p class="note" style="margin:.5rem 0 0">Go back to this condition in your own notes with these parts specifically in mind. Nothing is saved, so write them down.</p>
+    </div>
+
+    <h3>Why this works</h3>
+    <p>Facts belong to one condition. A framework belongs to all of them, so every time you use it the next use gets cheaper. That is why students who study this way find later units take less time rather than more.</p>
+    <p>It also tells you something a reread cannot. Where your answer thinned out is not a gap in this condition, it is a gap in how you approach every condition, and fixing it once pays off everywhere.</p>
+
+    <h3>Carry it forward</h3>
+    <p>Run these three questions on every new disorder you meet this term, before you open your notes on it. Answer them from what you already know about how bodies work, then read, then see what you got wrong. The reading goes faster because you arrive with questions instead of a blank page.</p>
+
+    <div class="keybar"><strong>Now take the checkpoint.</strong> It gives you a condition this module never taught. Work the three questions on it before you look at the options, the same way you just did here.</div>
+  </section>
+
+</main>
+
+<footer>Part 4 &middot; Learning to Study Nursing Content: An Active Approach &middot; Nothing entered on this page is stored or transmitted.</footer>
+<div class="srmsg" role="status" aria-live="polite" id="srlive"></div>
+
+<script>
+(function(){
+  "use strict";
+  function announce(m){ document.getElementById('srlive').textContent=m; }
+  function words(el){ var t=el.value.trim(); return t? t.split(/\s+/).length : 0; }
+
+  document.querySelectorAll('.ck input').forEach(function(i){
+    i.addEventListener('change', function(){ i.closest('.ck').classList.toggle('on', i.checked); });
+  });
+
+  document.getElementById('revealbtn').addEventListener('click', function(){
+    var btn=this, err=document.getElementById('err');
+    var cond=document.getElementById('cond');
+    var qs=['q1','q2','q3'].map(function(id){ return document.getElementById(id); });
+    if(cond.value.trim()===''){
+      err.textContent='Name a condition first. The point of this one is that you choose it, not the module.';
+      err.hidden=false; announce('Name a condition first.'); return;
+    }
+    var thin = qs.filter(function(t){ return words(t) < 8; });
+    if(thin.length){
+      err.textContent='Answer all three questions first. ' + thin.length + ' still too short. A framework you have not actually used on your own material has not been tested.';
+      err.hidden=false; announce('Answer all three questions first.'); return;
+    }
+    err.hidden=true;
+    cond.disabled=true; qs.forEach(function(t){ t.disabled=true; });
+    document.getElementById('model').classList.add('show');
+    btn.disabled=true; btn.textContent='Now mark each part below';
+    document.getElementById('hint2').textContent='Tick only what your own answers actually contained.';
+    document.getElementById('model').scrollIntoView({behavior:'smooth',block:'start'});
+    announce('A worked example is shown. Mark your own answers against the structure.');
+  });
+
+  document.getElementById('donebtn').addEventListener('click', function(){
+    var boxes=Array.prototype.slice.call(document.querySelectorAll('.ck input'));
+    var gaps=boxes.filter(function(b){ return !b.checked; }).map(function(b){ return b.dataset.g; });
+    var got=boxes.length-gaps.length;
+    var cond=document.getElementById('cond').value.trim();
+    var head=document.getElementById('verdicthead'), body=document.getElementById('verdictbody');
+
+    if(gaps.length===0){
+      head.textContent='You ran the whole framework unaided';
+      body.textContent='Seven parts, on a condition this module never covered, from what you already understood about how bodies work. That is the framework doing its job, and it will do the same on the next condition and the one after that.';
+    } else if(got<=2){
+      head.textContent='Most of the framework did not come through';
+      body.textContent='Useful to find now. Watching the worked example made it look straightforward, and running it yourself is where the difference shows. What is listed below is not a gap in ' + (cond || 'that condition') + ', it is the part of the framework you skipped, and it will be the same part next time unless you watch for it.';
+    } else if(gaps.length<=2){
+      head.textContent='You ran most of the framework';
+      body.textContent='Nearly all of it was yours, on material this module never taught. What is below is what your answer passed over, and those are the parts worth adding deliberately next time.';
+    } else {
+      head.textContent='Parts of the framework came through';
+      body.textContent='You had several pieces. The ones below are the parts your answer did not reach, and each one is a habit rather than a fact, so adding it helps on every condition rather than only this one.';
+    }
+
+    var box=document.getElementById('gapbox'), list=document.getElementById('gaplist');
+    if(gaps.length){
+      list.innerHTML='';
+      gaps.forEach(function(g){ var li=document.createElement('li'); li.textContent=g; list.appendChild(li); });
+      box.hidden=false;
+    } else { box.hidden=true; }
+
+    this.disabled=true; this.textContent='Your result is below';
+    var c=document.getElementById('closing');
+    c.style.display='block';
+    c.scrollIntoView({behavior:'smooth',block:'start'});
+    announce('Your result is shown below.');
+  });
+})();
+</script>
+</body>
+</html>
